@@ -3,28 +3,29 @@
 const api = (function () {
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/chrisyang';
   
-  function getItems(callback) {
-    $.getJSON(`${BASE_URL}/items`, callback);
+  function getBookmarks(callback) {
+    $.getJSON(`${BASE_URL}/bookmarks`, callback);
   }
 
-  function createItem(title, description, stars, callback) {
-    const newItem = {
+  function createItem(title, description, stars, url, callback) {
+    const newItem = JSON.stringify({
       title,
-      description,
-      stars,
-    };
+      desc: description,
+      rating: stars,
+      url,
+    });
     $.ajax({
-      url: `${BASE_URL}/items`,
+      url: `${BASE_URL}/bookmarks`,
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(newItem),
+      data: newItem,
       success: callback,
     });
   }
 
   function updateItem(id, updateData, callback) {
     $.ajax({
-      url: `${BASE_URL}/items/${id}`,
+      url: `${BASE_URL}/bookmarks/${id}`,
       method: 'PATCH',
       contentType: 'application/json',
       data: JSON.stringify(updateData),
@@ -34,7 +35,7 @@ const api = (function () {
 
   function deleteItem(id, callback) {
     $.ajax({
-      url: `${BASE_URL}/items/${id}`,
+      url: `${BASE_URL}/bookmarks/${id}`,
       method: 'DELETE',
       contentType: 'application/json',
       data: JSON.stringify(),
@@ -43,7 +44,7 @@ const api = (function () {
   }
 
   return {
-    getItems,
+    getBookmarks,
     createItem,
     updateItem,
     deleteItem

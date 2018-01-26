@@ -1,7 +1,165 @@
+/* BASE STYLES -------------------------------------------------------*/
+* {
+  box-shadow: border-box;
+  margin: 0;
+  padding: 0; }
+
+body,
+html {
+  font-family: 'Roboto', sans-serif;
+  background-color: #333;
+  color: #333; }
+
+h1, h2, h3, h4 {
+  font-family: 'Raleway', sans-serif; }
+
+h1 {
+  font-size: 3.5em; }
+
+h2 {
+  font-size: 2em; }
+
+h3 {
+  font-size: 1.5em; }
+
+ul {
+  list-style-type: none; }
+
+a {
+  text-decoration: none;
+  color: #333; }
+
+.container {
+  width: 50%;
+  min-height: 75vh;
+  letter-spacing: 1.05px;
+  background-color: #fff;
+  padding: 20px;
+  margin: 10vh auto;
+}
+
+.container h1 {
+  text-align: center;
+}
+
+input {
+  padding: 5px;
+  margin: 10px 0;
+}
+
+/* Bookmark Stuff... ---------------------------------------------------------------------*/
+.stars {
+  float: right;
+  margin-top: 20px;
+  width: 90px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  background-color: #03A9F4;
+  color: #fff;
+  padding: 12px 10px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0B3954;
+  color: #FFFAFA;
+  cursor: pointer;
+}
+
+.bookmark-list {
+  margin: 20px auto;
+}
+
+.bookmark {
+  padding: 20px 15px;
+  margin: 5px 0;
+  border: 1px solid #333;
+  font-size: 18px;
+}
+
+.bookmark-title {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.rating {
+  float: right;
+  margin-bottom: 20px;
+}
+
 .openTab {
   display: none;
-};
+  width: 100%;
+  height: 100%;
+}
 
-.checked {
-  color: orange;
-};
+.bookmark-description {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.description {
+  width: 60%;
+  margin: auto 0;
+  margin-right: 2%;
+}
+
+.bookmark-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+}
+
+.bookmark-buttons button {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.bookmark-buttons a {
+  width: 100%;
+}
+
+/* Create/Edit Bookmark -------------------------------------------------*/
+.add-bookmark-tab {
+  margin: 10px 0;
+}
+
+.add-star {
+  float: right;
+  margin-top: 15px;
+  width: 90px;
+}
+
+.create-description {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+textarea {
+  height: 150px;
+  padding: 5px;
+}
+
+.add-url {
+  height: 10px;
+  width: 97%;
+  margin: 0;
+}
+
+.create-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 36.5%;
+  margin: 0;
+}
+
+.bookmark-edit-url {
+  width: 100%;
+}

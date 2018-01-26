@@ -2,28 +2,28 @@
 
 const Item = (function() {
 
-  function validateItem(title, description, stars, URL) {
+  function validateItem(title, desc, rating, url) {
     if (!title) {
       throw new TypeError('Title cannot be blank');
     } 
-    if (!description) {
+    if (!desc) {
       throw new TypeError('Description cannot be blank');
     }
-    if (!stars) {
+    if (!rating) {
       throw new TypeError('Stars cannot be blank');
     } 
-    if (!URL) {
+    if (!url) {
       throw new TypeError('URL cannot be blank');
     }
   }
   
-  function create(title, description, stars, URL) {
+  function create(title, desc, rating, url) {
     return {
       id: cuid(),
       title,
-      description,
-      stars,
-      URL
+      desc,
+      rating,
+      url
     };
   }
 
