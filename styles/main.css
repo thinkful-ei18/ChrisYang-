@@ -1,0 +1,7 @@
+.openTab {
+  display: none;
+};
+
+.checked {
+  color: orange;
+};
