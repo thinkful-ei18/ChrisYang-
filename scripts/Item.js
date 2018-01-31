@@ -1,5 +1,7 @@
 'use strict';
 
+/* global cuid */
+
 const Item = (function() {
 
   function validateItem(title, desc, rating, url) {

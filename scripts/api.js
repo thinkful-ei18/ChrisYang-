@@ -38,7 +38,6 @@ const api = (function () {
       url: `${BASE_URL}/bookmarks/${id}`,
       method: 'DELETE',
       contentType: 'application/json',
-      data: JSON.stringify(),
       success: callback,
     });
   }
