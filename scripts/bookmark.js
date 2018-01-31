@@ -12,10 +12,12 @@ const bookmark = (function() {
     if (item.edit) {
       itemTitle = `
         <form id="bookmark-edit-item">
-          <input class="bookmark-edit-title" type="text" value="${item.title}" />
+          <input class="bookmark-edit-title" id="bookmark-title" type="text" value="${item.title}" />
         </form>
       `;
-      itemDescription = `<textarea class="description">${item.desc}</textarea>`;
+      itemDescription = `
+        <textarea class="description" id="bookmark-descriptions">${item.desc}</textarea>
+      `;
       itemStars = `
         <select class="edit-star">
           <option value="1">1-star</option>
@@ -67,7 +69,7 @@ const bookmark = (function() {
       let addItemPage = `
       <li class="add-bookmark-tab">
         <form>
-          <input class="bookmark-edit-title" type="text" placeholder="Enter a Title" />
+          <input class="bookmark-edit-title" id="bookmark-title" type="text" placeholder="Enter a Title" />
           <select class="add-star">
             <option value="1">1-star</option>
             <option value="2">2-star</option>
@@ -76,9 +78,9 @@ const bookmark = (function() {
             <option value="5">5-star</option>
           </select>
           <div class="create-description">
-          <textarea class="description" placeholder="Enter a Description"></textarea>
+          <textarea class="description" id="bookmark-descriptions" placeholder="Enter a Description"></textarea>
             <div class="create-buttons">
-              <input type="text" class="add-url" placeholder="Enter a URL"></input>
+              <input type="text" class="add-url" id="bookmark-url" placeholder="Enter a URL"></input>
               <div>
                 <button type="button" class="add-bookmark">Add Bookmark</button>
                 <button type="button" class="cancel-bookmark">Cancel</button>

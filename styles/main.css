@@ -7,7 +7,7 @@
 body,
 html {
   font-family: 'Roboto', sans-serif;
-  background-color: #333;
+  background-color: #124E78;
   color: #333; }
 
 h1, h2, h3, h4 {
@@ -36,6 +36,7 @@ a {
   background-color: #fff;
   padding: 20px;
   margin: 10vh auto;
+  border: 5px solid #111;
 }
 
 .container h1 {
@@ -104,7 +105,7 @@ button:hover {
 }
 
 .description {
-  width: 60%;
+  width: 50%;
   margin: auto 0;
   margin-right: 2%;
 }
@@ -162,4 +163,40 @@ textarea {
 
 .bookmark-edit-url {
   width: 100%;
+}
+
+/* Media Queries ---------------------------------------------------*/
+@media only screen and (max-width: 700px) {
+  .container {
+    width: 70%;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  .create-buttons div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .create-buttons div button {
+    margin: 5px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .container {
+    width: 80%;
+  }
 }
