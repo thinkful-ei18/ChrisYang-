@@ -1,6 +1,6 @@
 /* BASE STYLES -------------------------------------------------------*/
 * {
-  box-shadow: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0; }
 
@@ -48,11 +48,9 @@ input {
   margin: 10px 0;
 }
 
-/* Bookmark Stuff... ---------------------------------------------------------------------*/
+/* Bookmark ---------------------------------------------------------------------*/
 .stars {
   float: right;
-  margin-top: 20px;
-  width: 90px;
 }
 
 button {
@@ -82,12 +80,17 @@ button:hover {
   font-size: 18px;
 }
 
-.bookmark-title {
-  font-weight: bold;
+#expand {
   cursor: pointer;
+  margin-right: 10px;
 }
 
-.rating {
+.bookmark-title {
+  display: inline-block;
+  font-weight: bold;
+}
+
+#rating {
   float: right;
   margin-bottom: 20px;
 }
@@ -100,6 +103,7 @@ button:hover {
 
 .bookmark-description {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   height: 100%;
 }
@@ -132,13 +136,15 @@ button:hover {
 
 .add-star {
   float: right;
-  margin-top: 15px;
-  width: 90px;
 }
 
 .create-description {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+}
+
+label[for=bookmark-descriptions] {
   width: 100%;
 }
 
@@ -148,8 +154,7 @@ textarea {
 }
 
 .add-url {
-  height: 10px;
-  width: 97%;
+  width: 100%;
   margin: 0;
 }
 
@@ -166,9 +171,19 @@ textarea {
 }
 
 /* Media Queries ---------------------------------------------------*/
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 1100px) {
+  .container {
+    width: 65%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
   .container {
     width: 70%;
+  }
+
+  label {
+    font-size: 14px;
   }
 
   h1 {
@@ -176,12 +191,11 @@ textarea {
   }
 
   button {
-    font-size: 14px;
     padding: 5px;
   }
 
-  input {
-    font-size: 14px;
+  .bookmark {
+    font-size: 16px;
   }
 
   .create-buttons div {
@@ -192,6 +206,18 @@ textarea {
 
   .create-buttons div button {
     margin: 5px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .container {
+    width: 75%;
+  }
+
+  .add-star {
+    display: block;
+    float: none;
+    margin-bottom: 10px;
   }
 }
 

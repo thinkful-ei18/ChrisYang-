@@ -34,8 +34,8 @@ const store = (function() {
     amountOfStars: 0,
     searchTerm: '',
 
-    findById,
     addItem,
+    findById,
     findAndDelete,
     findAndUpdateItem,
     turnOffEdit,

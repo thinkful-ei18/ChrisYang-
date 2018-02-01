@@ -1,34 +1,46 @@
 'use strict';
 
+/* global store, api*/
+
 const bookmark = (function() {
 
-  function generateItemElement(item) {
-    let itemTitle = `<span class="bookmark-title">${item.title}</span>`;
-    let itemDescription = `<span class="description">${item.desc}</span>`;
-    let itemStars = `<span>${item.rating}/5 stars</span>`;
-    let itemURL = `<a href="${item.url}"><button type="submit">Visit Site</button></a>`;
-    let editButton  = '<button type="submit" class="bookmark-edit">Edit Bookmark</button>';
+  function generateBookmarkElement(bookmark) {
+    let bookmarkTitle = `
+      <i class="fas fa-chevron-circle-down" id="expand"></i>
+      <span class="bookmark-title">${bookmark.title}</span>
+    `;
+    let bookmarkDescription = `<span class="description">${bookmark.desc}</span>`;
+    let bookmarkRating = `<span>${bookmark.rating}/5 stars</span>`;
+    let bookmarkURL = `
+      <a href="${bookmark.url}"><button type="submit">Visit Site</button></a>
+    `;
+    let editButton  = `
+      <button type="submit" class="bookmark-edit">Edit Bookmark</button>
+    `;
     let deleteButton = '<button type="submit" class="bookmark-delete">Delete Bookmark</button>';
-    if (item.edit) {
-      itemTitle = `
-        <form id="bookmark-edit-item">
-          <input class="bookmark-edit-title" id="bookmark-title" type="text" value="${item.title}" />
-        </form>
+    if (bookmark.edit) {
+      bookmarkTitle = `
+          <i class="fas fa-chevron-circle-down" id="expand"></i>
+          <label for="bookmark-title">Title:</label>
+          <input class="bookmark-edit-title" id="bookmark-title" type="text" value="${bookmark.title}" />
       `;
-      itemDescription = `
-        <textarea class="description" id="bookmark-descriptions">${item.desc}</textarea>
+      bookmarkDescription = `
+        <label for="bookmark-descriptions">Description:</label>
+        <textarea class="description" id="bookmark-descriptions">${bookmark.desc}</textarea>
       `;
-      itemStars = `
-        <select class="edit-star">
+      bookmarkRating = `
+        <label for="edit-form">Rating<label>
+        <select id="edit-form">
           <option value="1">1-star</option>
-          <option value="2">2-star</option>
-          <option value="3">3-star</option>
-          <option value="4">4-star</option>
-          <option value="5">5-star</option>
+          <option value="2">2-stars</option>
+          <option value="3">3-stars</option>
+          <option value="4">4-stars</option>
+          <option value="5">5-stars</option>
         </select>
       `;
-      itemURL = `
-        <input class="bookmark-edit-url" type="text" value="${item.url}" />
+      bookmarkURL = `
+        <label for="bookmark-url">URL:</label>
+        <input class="bookmark-edit-url" type="text" id="bookmark-url" value="${bookmark.url}" />
       `;
       editButton = `
         <button type="submit" class="save-edit">Save Changes</button>
@@ -39,47 +51,50 @@ const bookmark = (function() {
     }
 
     return `
-    <li class="bookmark" data-item-id="${item.id}">
-      ${itemTitle}
-      <div class="rating">
-      ${itemStars}
-      </div>
-      <div class="openTab" id="${item.id}">
+    <li class="bookmark" data-item-id="${bookmark.id}">
+    <form>
+      ${bookmarkTitle}
+      <span id="rating">
+      ${bookmarkRating}
+      </span>
+      <div class="openTab" id="${bookmark.id}">
         <div class="bookmark-description">
-        ${itemDescription}
+        ${bookmarkDescription}
           <div class="bookmark-buttons">
             ${editButton}
             ${deleteButton}
-            ${itemURL}
+            ${bookmarkURL}
           </div>
         <div>
       </div>
+    </form>
     </li>
     `;
   }
 
-  function generateBookmarkItemsString(bookmarks) {
-    const items = bookmarks.map((item) => generateItemElement(item));
-    return items.join('');
-  }
-
-  function generateNewItem() {
+  function generateNewBookmark() {
     $('.bookmark-add').click(function() {
       event.preventDefault();
       let addItemPage = `
       <li class="add-bookmark-tab">
         <form>
+          <label for="bookmark-title">Title:</label>
           <input class="bookmark-edit-title" id="bookmark-title" type="text" placeholder="Enter a Title" />
-          <select class="add-star">
-            <option value="1">1-star</option>
-            <option value="2">2-star</option>
-            <option value="3">3-star</option>
-            <option value="4">4-star</option>
-            <option value="5">5-star</option>
-          </select>
+          <span class="add-star">
+            <label for="add-form">Rating<label>
+            <select id="add-form">
+              <option value="1">1-star</option>
+              <option value="2">2-stars</option>
+              <option value="3">3-stars</option>
+              <option value="4">4-stars</option>
+              <option value="5">5-stars</option>
+            </select>
+          </span>
           <div class="create-description">
+          <label for="bookmark-descriptions">Description:</label>
           <textarea class="description" id="bookmark-descriptions" placeholder="Enter a Description"></textarea>
             <div class="create-buttons">
+              <label for="bookmark-url">URL:</label>
               <input type="text" class="add-url" id="bookmark-url" placeholder="Enter a URL"></input>
               <div>
                 <button type="button" class="add-bookmark">Add Bookmark</button>
@@ -94,12 +109,23 @@ const bookmark = (function() {
     });
   }
 
-  function addItem() {
+  function generateBookmarkString(bookmarks) {
+    const items = bookmarks.map((item) => generateBookmarkElement(item));
+    return items.join('');
+  }
+
+  function getBookmarkIdFromElement(item) {
+    return $(item)
+      .closest('.bookmark')
+      .data('item-id');
+  }
+
+  function addBookmark() {
     $('.bookmark-list').on('click', '.add-bookmark', event => {
       event.preventDefault();
       const title = $('.bookmark-edit-title').val();
       const desc = $('.description').val();
-      const rating = $('.add-star').val();
+      const rating = $('#add-form').val();
       const url = $('.add-url').val();
       api.createItem(title, desc, rating, url, (newItem) => {
         store.addItem(newItem);
@@ -115,23 +141,28 @@ const bookmark = (function() {
     });
   }
 
-  function getItemIdFromElement(item) {
-    return $(item)
-      .closest('.bookmark')
-      .data('item-id');
+  function expandBookmark() {
+    $('.bookmark-list').on('click', '#expand', event => {
+      const id = getBookmarkIdFromElement(event.currentTarget);
+      $(`#${id}`).slideToggle();
+    });
   }
 
-  function expandItem() {
-    $('.bookmark-list').on('click', '.bookmark-title', event => {
-      const id = getItemIdFromElement(event.currentTarget);
-      $(`#${id}`).slideToggle();
+  function deleteBookmark() {
+    $('.bookmark-list').on('click', '.bookmark-delete', event => {
+      event.preventDefault();
+      const id = getBookmarkIdFromElement(event.currentTarget);
+      api.deleteItem(id, () => {
+        store.findAndDelete(id);
+        render();
+      });
     });
   }
 
   function bookmarkEditItem() {
     $('.bookmark-list').on('click', '.bookmark-edit', event => {
       event.preventDefault();
-      const id = getItemIdFromElement(event.currentTarget);
+      const id = getBookmarkIdFromElement(event.currentTarget);
       store.turnOffEdit();
       store.toggleEdit(id);
       render();
@@ -142,29 +173,19 @@ const bookmark = (function() {
   function saveChanges() {
     $('.bookmark-list').on('click', '.save-edit', event => {
       event.preventDefault();
-      const id = getItemIdFromElement(event.currentTarget);
+      const id = getBookmarkIdFromElement(event.currentTarget);
       const title = $('.bookmark-edit-title').val();
       const desc = $('.description').val();
-      const rating = $('.edit-star').val();
+      const rating = $('#edit-form').val();
       const url = $('.bookmark-edit-url').val();
-      // store.findAndUpdateItem(id, title, desc, rating, url);
-      api.updateItem(id, { title: title }, () => {
-        store.findAndUpdateItem(id, { title: title });
-        render();
-        $(`#${id}`).show();
-      });
-      api.updateItem(id, { desc: desc }, () => {
-        store.findAndUpdateItem(id, { desc: desc });
-        render();
-        $(`#${id}`).show();
-      });
-      api.updateItem(id, { rating: rating }, () => {
-        store.findAndUpdateItem(id, { rating: rating });
-        render();
-        $(`#${id}`).show();
-      });
-      api.updateItem(id, { url: url }, () => {
-        store.findAndUpdateItem(id, { url: url });
+      const updateBookmark = {
+        title: title, 
+        desc: desc, 
+        rating: rating,
+        url: url 
+      };
+      api.updateItem(id, updateBookmark, () => {
+        store.findAndUpdateItem(id, updateBookmark);
         render();
         $(`#${id}`).show();
       });
@@ -175,61 +196,35 @@ const bookmark = (function() {
   function undoChanges() {
     $('.bookmark-list').on('click', '.undo-edit', event => {
       event.preventDefault();
-      const id = getItemIdFromElement(event.currentTarget);
+      const id = getBookmarkIdFromElement(event.currentTarget);
       store.turnOffEdit();
       render();
       $(`#${id}`).show();
     });
   }
 
-  function deleteItemClicked() {
-    // like in `handleItemCheckClicked`, we use event delegation
-    $('.bookmark-list').on('click', '.bookmark-delete', event => {
-      // get the index of the item in store.items
-      const id = getItemIdFromElement(event.currentTarget);
-      api.deleteItem(id, () => {
-        store.findAndDelete(id);
-        render();
-      });
-    });
-  }
-
   function starFilter() {
-    $('.stars').change(function() {
-      render();
-    });
-  }
-
-  function bookmarkSearch() {
-    $('.bookmark-search').on('keyup', event => {
-      const val = $(event.currentTarget).val();
-      store.setSearchTerm(val);
+    $('#star-filter').change(function() {
       render();
     });
   }
 
   function render() {
-    // Filter item list if store prop is true by item.checked === false
-    let items = store.items.filter(item => item.rating >= $('.stars').val());
-  
-    // render the shopping list in the DOM
-    const bookmarkItemsString = generateBookmarkItemsString(items);
-  
-    // insert that HTML into the DOM
-    $('.bookmark-list').html(bookmarkItemsString);
+    let items = store.items.filter(item => item.rating >= $('#star-filter').val());
+    const bookmarkString = generateBookmarkString(items);
+    $('.bookmark-list').html(bookmarkString);
   }
 
   function bindEventListeners() {
-    expandItem();
+    generateNewBookmark();
+    addBookmark();
+    cancel();
+    expandBookmark();
+    deleteBookmark();
     bookmarkEditItem();
-    deleteItemClicked();
-    generateNewItem();
-    addItem();
     saveChanges();
     undoChanges();
     starFilter();
-    bookmarkSearch();
-    cancel();
   }
 
   return {
